@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -9,8 +9,6 @@ import {
   Divider,
   Image,
   Input,
-  Select,
-  SelectItem,
   Textarea,
   Button,
 } from "@nextui-org/react";
@@ -35,7 +33,6 @@ type ActionProps = {
 
 export default function Action({ params }: ActionProps) {
   const [actionData, setActionData] = useState<ActionData | null>(null);
-  const [status, setStatus] = useState<string>("");
   const [comments, setComments] = useState<string | undefined>();
 
   const actionId = params.actionId;
@@ -43,12 +40,16 @@ export default function Action({ params }: ActionProps) {
 
   useEffect(() => {
     const loadData = async () => {
-      const action = await getAction(actionId)
-      const comments = await getComments(actionId)
+      try {
+        const action = await getAction(actionId);
+        const comments = await getComments(actionId);
 
-      setActionData(action)
-      setComments(comments)
-    }
+        setActionData(action);
+        setComments(comments);
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    };
 
     loadData();
   }, [actionId]);
@@ -58,13 +59,7 @@ export default function Action({ params }: ActionProps) {
     localStorage.setItem("actionId", params.actionId);
   }, [params.userId, params.actionId]);
 
-  const animals = [
-    { label: "Not Started", value: "1" },
-    { label: "In Progress", value: "2" },
-    { label: "On Hold", value: "3" },
-    { label: "Awaiting Response", value: "4" },
-    { label: "Closed", value: "5" },
-  ];
+
 
   const router = useRouter();
 
@@ -117,25 +112,12 @@ export default function Action({ params }: ActionProps) {
             label="Issue Type"
             value={actionData?.Item || ""}
           />
-          <Select
-            label="Select a Status"
-            className="w-full"
-            defaultSelectedKeys={status || "1"}
-            onChange={(value) => setStatus(value)}
-          >
-            {animals.map((animal) => (
-              <SelectItem key={animal.value} value={animal.value}>
-                {animal.label}
-              </SelectItem>
-            ))}
-          </Select>
+
           <Textarea
             label="Issue Description"
             readOnly
             defaultValue={actionData?.ActionDescription || ""}
           />
-
-          
 
           <ActionText title="Comment" id="comment" item="New" />
         </CardBody>
@@ -144,7 +126,7 @@ export default function Action({ params }: ActionProps) {
           <Button
             color="danger"
             variant="flat"
-            onClick={async () => {
+            onClick={() => {
               router.push("/");
             }}
           >
@@ -152,7 +134,7 @@ export default function Action({ params }: ActionProps) {
           </Button>
           <Button
             color="primary"
-            onClick={async () => {
+            onClick={() => {
               router.push("/home");
             }}
           >
