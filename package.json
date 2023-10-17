@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.1.13",
+    "@types/bcryptjs": "^2.4.4",
+    "@types/mssql": "^9.1.1",
+    "bcryptjs": "^2.4.3",
     "framer-motion": "^10.16.4",
+    "mssql": "^10.0.1",
     "next": "13.5.5",
     "react": "^18",
     "react-dom": "^18"
