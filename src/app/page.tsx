@@ -34,7 +34,7 @@ const placeholderRows: Rows = [
   }
 ];
 
-export default function Home() {
+export default function Home () {
   const [rows, setRows] = useState<Rows>(placeholderRows);
   const [columns, setColumns] = useState<Columns>(placeholderColumns);
 
