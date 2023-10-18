@@ -3,18 +3,7 @@
 import { useEffect, useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react";
 
-type ColumnData = {
-  key: string;
-  label: string;
-};
-
-type Columns = ColumnData[];
-
-type RowData = {
-  [key: string]: any;
-};
-
-type Rows = RowData[];
+import { type Columns, type Rows } from '@/types'
 
 const placeholderColumns: Columns = [
   { key: "UserId", label: "UserId" },
@@ -34,7 +23,7 @@ const placeholderRows: Rows = [
   }
 ];
 
-export default function UserTable () {
+export default function UserTable() {
   const [rows, setRows] = useState<Rows>(placeholderRows);
   const [columns, setColumns] = useState<Columns>(placeholderColumns);
 

@@ -45,7 +45,7 @@ const StatusSelect: React.FC<StatusSelectProps> = ({ selectedStatus }) => {
     <div className="p-1 flex w-full max-w-xs flex-col gap-2">
       <Select
         label="Action Status"
-        variant="bordered"
+        variant="flat"
         placeholder="Please select a status"
         defaultSelectedKeys={selectedStatus}
         className="w-full"
