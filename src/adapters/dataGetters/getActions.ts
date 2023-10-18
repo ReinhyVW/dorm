@@ -1,5 +1,5 @@
 export async function getAction(actionId: string) {
-  const res = await fetch(`/api/actions/${actionId}`, { cache: 'no-cache' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}api/actions/${actionId}`, { cache: 'no-cache' });
 
   interface Action {
     AssignedOn: Date;

@@ -1,7 +1,7 @@
 import { Columns, Centers } from "@/types";
 
 export async function getColumns() {
-  const res = await fetch(`http://localhost:3000/api/centers`, { cache: 'no-cache' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}api/centers`, { cache: 'no-cache' });
 
   const centerData = await res.json();
 
@@ -32,7 +32,7 @@ export async function getColumns() {
 }
 
 export async function getRows() {
-  const res = await fetch(`http://localhost:3000/api/items`, { cache: 'no-cache' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}api/items`, { cache: 'no-cache' });
   const rows = await res.json();
 
   return rows;

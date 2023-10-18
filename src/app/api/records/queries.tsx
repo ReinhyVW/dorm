@@ -66,7 +66,7 @@ export async function submitComment(data:  any) {
   .input('RecordItem', sql.Int, item)
   .input('Value', sql.VarChar, value)
   .query(`
-    INSERT INTO MEETINGCOMMENTS (MeetingCommentId, MeetingCommentDate, MeetingCommentItem, [Value])
+    INSERT INTO MEETINGCOMMENTS (GeneralId, MeetingCommentDate, MeetingCommentItem, [Value])
     VALUES (@GeneralId, @RecordDate, @RecordItem, @Value);
   `);
 }

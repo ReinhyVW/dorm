@@ -1,5 +1,5 @@
 export async function getUsers() {
-  const res = await fetch(`/api/users`, { cache: 'no-cache' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}api/users`, { cache: 'no-cache' });
 
   const users = await res.json();
 
@@ -7,7 +7,7 @@ export async function getUsers() {
 }
 
 export async function getUser(id: string) {
-  const res = await fetch(`/api/users/${id}`, { cache: 'no-cache' });
+  const res = await fetch(`${process.env.DB_HOST}api/users/${id}`, { cache: 'no-cache' });
 
   const user = await res.json();
 
@@ -15,7 +15,7 @@ export async function getUser(id: string) {
 }
 
 export async function getUserByEmail(email: string) {
-  const res = await fetch(`/api/users/email/${email}`, { cache: 'no-cache' });
+  const res = await fetch(`${process.env.DB_HOST}api/users/email/${email}`, { cache: 'no-cache' });
 
   const user = await res.json();
 

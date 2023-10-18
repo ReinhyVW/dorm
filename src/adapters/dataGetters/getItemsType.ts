@@ -1,6 +1,6 @@
 export async function getItemTypes() {
   try {
-    const response = await fetch(`${process.env.DB_HOST}/api/itemtypes`, { cache: 'no-cache' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}api/itemtypes`, { cache: 'no-cache' });
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

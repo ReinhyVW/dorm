@@ -41,6 +41,7 @@ export async function POST(request: any) {
 
         if (item === '1') {
           const recordData = { generalId, date, center, item, value };
+          console.log(center);
           submitRecord(recordData);
         } else if (item === 'comment') {
           const commentData = { generalId, date, item, value };
@@ -51,6 +52,8 @@ export async function POST(request: any) {
             const { reported, assigned, description, acuteness } = currentActionData;
             const actionData = { reported, assigned, center, description, acuteness, item };
             submitAction(actionData);
+
+            console.log(center);
 
             const actionId = await getLastActionId();
 

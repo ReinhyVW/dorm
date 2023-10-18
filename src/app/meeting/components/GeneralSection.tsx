@@ -74,13 +74,12 @@ export default function GeneralSection({ date }: GeneralSectionProps) {
       date: savedDate,
       groupedData,
       groupedActionData,
-    };
+    }
 
-    // Use async/await with saveRecord if it's asynchronous
     await saveRecord(data);
 
     deleteMeetingData();
-    router.push('/');
+    // router.push('/');
   };
 
   return (
