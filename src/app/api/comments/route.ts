@@ -3,32 +3,42 @@ import { NextResponse } from "next/server";
 import sql from 'mssql';
 
 export async function GET() {
-  const pool = await getConnection();
+  try {
+    const pool = await getConnection();
 
-  const result = await pool.request().query(`
-    SELECT * FROM COMMENTS
-  `);
+    const result = await pool.request().query(`
+      SELECT * FROM COMMENTS
+    `);
 
-  const items = result.recordset;
+    const items = result.recordset;
 
-  return NextResponse.json(items);
+    return NextResponse.json(items);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    return NextResponse.error("Internal Server Error", 500);
+  }
 }
 
 export async function POST(request: any) {
-  const pool = await getConnection();
+  try {
+    const pool = await getConnection();
 
-  const { ActionId, UserId, commentContent } = await request.json();
+    const { ActionId, UserId, commentContent } = await request.json();
 
-  const result = await pool.request()
-    .input('ActionId', sql.Int, ActionId)
-    .input('UserId', sql.Int, UserId)
-    .input('CommentContent', sql.VarChar, commentContent)
-    .query(`
-      INSERT INTO COMMENTS (CommentAction, CommentedBy, CommentContent)
-      VALUES (@ActionId, @UserId, @CommentContent)
-    `);
+    const result = await pool.request()
+      .input('ActionId', sql.Int, ActionId)
+      .input('UserId', sql.Int, UserId)
+      .input('CommentContent', sql.VarChar, commentContent)
+      .query(`
+        INSERT INTO COMMENTS (CommentAction, CommentedBy, CommentContent)
+        VALUES (@ActionId, @UserId, @CommentContent)
+      `);
 
-  NextResponse.json({
-    message: 'New Comment Added successfully'
-  });
+    return NextResponse.json({
+      message: 'New Comment Added successfully'
+    });
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    return NextResponse.json("Internal Server Error");
+  }
 }

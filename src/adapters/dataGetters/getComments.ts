@@ -3,7 +3,7 @@ export async function getComments(actionId: string) {
 
   const comments = await res.json();
 
-  const commentsRecordset = comments[0]
+  const commentsRecordset = comments
 
   return commentsRecordset;
 }

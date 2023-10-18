@@ -1,58 +1,65 @@
 "use client"
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Select, SelectItem, Selection } from "@nextui-org/react";
+import { getStatus } from "@/adapters/dataGetters/getStatus";
 
-export default function StatusSelect() {
+interface StatusData {
+  StatusId: number;
+  Status: string;
+}
+
+interface StatusSelectProps {
+  selectedStatus: string;
+}
+
+const StatusSelect: React.FC<StatusSelectProps> = ({ selectedStatus }) => {
   const [value, setValue] = React.useState<Selection>(new Set<string>());
+  // const [currentStatus, setCurrentStatus] = React.useState<string>("")
+  const [statusData, setStatusData] = React.useState<StatusData[]>([]);
 
-  const animals = [
-    { label: "Cat", value: "cat", description: "The second most popular pet in the world" },
-    { label: "Dog", value: "dog", description: "The most popular pet in the world" },
-    { label: "Elephant", value: "elephant", description: "The largest land animal" },
-    { label: "Lion", value: "lion", description: "The king of the jungle" },
-    { label: "Tiger", value: "tiger", description: "The largest cat species" },
-    { label: "Giraffe", value: "giraffe", description: "The tallest land animal" },
-    {
-      label: "Dolphin",
-      value: "dolphin",
-      description: "A widely distributed and diverse group of aquatic mammals",
-    },
-    { label: "Penguin", value: "penguin", description: "A group of aquatic flightless birds" },
-    { label: "Zebra", value: "zebra", description: "A several species of African equids" },
-    {
-      label: "Shark",
-      value: "shark",
-      description: "A group of elasmobranch fish characterized by a cartilaginous skeleton",
-    },
-    {
-      label: "Whale",
-      value: "whale",
-      description: "Diverse group of fully aquatic placental marine mammals",
-    },
-    { label: "Otter", value: "otter", description: "A carnivorous mammal in the subfamily Lutrinae" },
-    { label: "Crocodile", value: "crocodile", description: "A large semiaquatic reptile" },
-  ];
+  function getStatusById(statusId: number) {
+    return statusData?.find((status) => status.StatusId === statusId);
+  }
 
+  useEffect(() => {
+    localStorage.setItem("selectedStatus", String(Array.from(value)[0]));
+  }, [value]);
 
+  useEffect(() => {
+    const loadStatusData = async () => {
+      try {
+        const statusData = await getStatus();
+        setStatusData(statusData);
+      } catch (err) {
+        console.error("An error occurred while loading status data");
+      }
+    };
+
+    localStorage.setItem("selectedStatus", selectedStatus);
+
+    loadStatusData();
+  }, [selectedStatus]);
 
   return (
-    <div className="flex w-full max-w-xs flex-col gap-2">
+    <div className="p-1 flex w-full max-w-xs flex-col gap-2">
       <Select
-        label="Favorite Animal"
+        label="Action Status"
         variant="bordered"
-        placeholder="Select an animal"
-        selectedKeys={Array.from(value)} // Convert Set to an array
-        className="max-w-xs"
+        placeholder="Please select a status"
+        defaultSelectedKeys={selectedStatus}
+        className="w-full"
         onSelectionChange={setValue}
       >
-        {animals.map((animal) => (
-          <SelectItem key={animal.value} value={animal.value}>
-            {animal.label}
+        {statusData?.map((status) => (
+          <SelectItem key={status.StatusId} value={status.StatusId}>
+            {status.Status}
           </SelectItem>
         ))}
       </Select>
-      <p className="text-default-500 text-small">Selected: {Array.from(value).join(', ')}</p>
+      Current Status: {getStatusById(Number(selectedStatus))?.Status}
     </div>
   );
-}
+};
+
+export default StatusSelect;

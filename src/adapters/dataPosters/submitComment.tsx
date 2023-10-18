@@ -3,7 +3,7 @@ export default async function submitComment(data: any) {
 
   const request = { ActionId, UserId, commentContent }
 
-  const res = await fetch(`${process.env.HOST_ROUTE}api/comments`, {
+  const res = await fetch(`/api/comments`, {
     method: 'POST',
     body: JSON.stringify(request),
     headers: { 'Content-Type': 'application/json' }

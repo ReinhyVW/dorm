@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 
 import submitComment from "@/adapters/dataPosters/submitComment";
 
-export default function ActionText({
+export default function CommentInput({
   title,
   id,
   item,
@@ -67,8 +67,8 @@ export default function ActionText({
                 <Button
                   color="danger"
                   variant="flat"
-                  onClick={async () => {
-                    await localStorage.removeItem(id);
+                  onClick={() => {
+                    localStorage.removeItem("new-comment");
                     onClose();
                   }}
                 >
@@ -78,6 +78,7 @@ export default function ActionText({
                   color={"success"}
                   onClick={() => {
                     createComment()
+                    localStorage.removeItem("new-comment");
                     router.refresh();
                     onClose();
                   }}
