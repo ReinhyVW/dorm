@@ -14,8 +14,9 @@ export async function GET() {
 
     return NextResponse.json(items);
   } catch (error) {
-    console.error("Error fetching comments:", error);
-    return NextResponse.error("Internal Server Error", 500);
+    return NextResponse.json({
+      message: error
+    })
   }
 }
 
