@@ -7,7 +7,16 @@ export async function GET() {
     const pool = await getConnection();
 
     const result = await pool.request().query(`
-      SELECT * FROM COMMENTS
+      SELECT
+        C.CommentId,
+        C.CommentAction,
+        U.Username AS CommentedBy,
+        C.CommentDate,
+        C.CommentContent
+      FROM
+        COMMENTS C
+      JOIN
+        USERS U ON C.CommentedBy = U.UserId;
     `);
 
     const items = result.recordset;

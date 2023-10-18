@@ -1,15 +1,23 @@
 export async function getUsers() {
   const res = await fetch(`/api/users`, { cache: 'no-cache' });
 
-  const center = await res.json();
+  const users = await res.json();
 
-  return center
+  return users
 }
 
 export async function getUser(id: string) {
   const res = await fetch(`/api/users/${id}`, { cache: 'no-cache' });
 
-  const center = await res.json();
+  const user = await res.json();
 
-  return center
+  return user
+}
+
+export async function getUserByEmail(email: string) {
+  const res = await fetch(`/api/users/email/${email}`, { cache: 'no-cache' });
+
+  const user = await res.json();
+
+  return user
 }

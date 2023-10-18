@@ -13,7 +13,16 @@ export async function GET(
   const result = await pool.request()
     .input('ActionId', sql.Int, id)
     .query(`
-    SELECT * FROM COMMENTS WHERE CommentAction = @ActionId
+    SELECT
+    C.CommentId,
+    C.CommentAction,
+    U.Username AS CommentedBy,
+    C.CommentDate,
+    C.CommentContent
+  FROM
+    COMMENTS C
+  JOIN
+    USERS U ON C.CommentedBy = U.UserId WHERE CommentAction = @ActionId
   `)
 
   const centers = result.recordset;

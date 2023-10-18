@@ -1,25 +1,20 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  Image,
-  Input,
-  Textarea,
-  Button,
-  ScrollShadow,
+  Card, CardHeader, CardBody, CardFooter, Divider,
+  Input, Textarea, Button,
+  ScrollShadow
 } from "@nextui-org/react";
-import CommentInput from "../../components/CommentInput";
+
 import { getAction } from "@/adapters/dataGetters/getActions";
 import { getComments } from "@/adapters/dataGetters/getComments";
-import NextImage from "next/image";
-import { useRouter } from "next/navigation";
+import { updateAction } from "@/adapters/dataPutters/updateAction";
+
 import StatusSelect from "@/components/inputs/StatusSelect";
 import UserBanner from "@/components/UserBanner";
+import CommentInput from "../../components/CommentInput";
 import Comment from "../../components/Comment";
 
 type ActionData = {
@@ -29,6 +24,8 @@ type ActionData = {
   Item: string;
   StatusId: number;
   ActionDescription: string;
+  Center: string;
+  Resolution: null | string;
 };
 
 type ActionProps = {
@@ -43,10 +40,16 @@ interface CommentsData {
   CommentContent: null | string;
 }
 
+type UpdateActionData = {
+  StatusId: number,
+  Resolution: string
+}
+
 export default function Action({ params }: ActionProps) {
-  const [actionData, setActionData] = useState<ActionData | null>(null);
-  const [statusId, setStatusId] = useState<string>("");
-  const [comments, setComments] = useState<CommentsData[] | null>(null); // Fix comments type
+  const [actionData, setActionData] = useState<ActionData | null>(null)
+  const [statusId, setStatusId] = useState<string>("")
+  const [comments, setComments] = useState<CommentsData[] | null>(null)
+  const [resolution, setResolution] = useState<string>("")
 
   const actionId = params.actionId;
   const userId = params.userId;
@@ -75,8 +78,23 @@ export default function Action({ params }: ActionProps) {
 
   const router = useRouter();
 
+  const saveActionGoHome = () => {
+    try {
+      const updateActionData: UpdateActionData = {
+        StatusId: Number(localStorage.getItem("selectedStatus")),
+        Resolution: resolution
+      }
+
+      updateAction(actionId, updateActionData)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      router.push('/')
+    }
+  }
+
   return (
-    <div className="w-screen h-screen bg-slate-100 flex items-center justify-center">
+    <div className="w-screen h-screen bg-slate-100 flex items-center justify-center gap-0.5">
       <Card className="min-w-fit h-5/6">
         <CardHeader className="flex gap-3 min-w-max">
           <UserBanner avatarSrc="" userName={actionData?.AssignedTo} descriptionInfo={`
@@ -114,12 +132,29 @@ export default function Action({ params }: ActionProps) {
             value={actionData?.Item || ""}
           />
 
+          <Input
+            className="w-full"
+            classNames={{ label: "w-1/3" }}
+            readOnly={true}
+            labelPlacement="outside-left"
+            label="Center"
+            value={actionData?.Center || ""}
+          />
+
           <StatusSelect selectedStatus={statusId} />
 
           <Textarea
             label="Issue Description"
             readOnly={true}
             defaultValue={actionData?.ActionDescription || ""}
+          />
+
+          <Textarea
+            label="Resolution"
+            readOnly={false}
+            defaultValue={actionData?.Resolution || ""}
+            onValueChange={setResolution}
+            id="resolution"
           />
 
           <CommentInput title="Comment" id="comment" item="New" />
@@ -130,24 +165,25 @@ export default function Action({ params }: ActionProps) {
             color="danger"
             variant="flat"
             onClick={() => {
-              router.push("/");
+              router.push("/")
             }}
           >
             Cancel
           </Button>
           <Button
             color="primary"
-            onClick={() => {
-              router.refresh();
-            }}
+            onClick={saveActionGoHome}
           >
             Save
           </Button>
         </CardFooter>
       </Card>
 
-      <Card className="h-5/6 w-1/3 flex flex-col items-center pt-4 gap-1">
-        <ScrollShadow hideScrollBar className="w-full min-h-full flex flex-wrap items-start justify-center gap-2">
+      <Card className="h-5/6 w-1/3 flex flex-col py-4 items-center pt-4 gap-1">
+        <div className="w-full flex flex-wrap items-center justify-center gap-2">
+          <h1 className="text-lg text-foreground-500 font-semibold">Comments</h1>
+        </div>
+        <ScrollShadow hideScrollBar className="w-full py-6 min-h-full flex flex-wrap items-start justify-center gap-2">
           {comments?.map((comment) => (
             <Comment
               key={comment.CommentId}
@@ -161,7 +197,7 @@ export default function Action({ params }: ActionProps) {
                 hour: 'numeric',
                 minute: 'numeric',
               }))}
-              userName={`User ${comment.CommentedBy}`}
+              userName={`${comment.CommentedBy}`}
             />
           ))}
         </ScrollShadow>

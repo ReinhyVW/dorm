@@ -8,6 +8,8 @@ export async function getAction(actionId: string) {
     Item: string;
     StatusId: number;
     ActionDescription: string;
+    Center: string;
+    Resolution: null | string
   }
 
   const action = await res.json() as Action[];
@@ -16,4 +18,3 @@ export async function getAction(actionId: string) {
 
   return actionRecordset;
 }
-
