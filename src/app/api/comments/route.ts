@@ -38,7 +38,8 @@ export async function POST(request: any) {
       message: 'New Comment Added successfully'
     });
   } catch (error) {
-    console.error("Error adding comment:", error);
-    return NextResponse.json("Internal Server Error");
+    return NextResponse.json({
+      message: error
+    })
   }
 }
