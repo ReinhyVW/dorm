@@ -1,23 +1,20 @@
-import getConnection from "../../db";
+import getConnection from "../db";
 import { NextResponse } from "next/server";
 import sql from 'mssql';
 
-export async function GET(
-  request: Request,
-  { params }: { params: { actionId: string } }
-) {
-  const id = params.actionId
+export async function GET() {
 
   const pool = await getConnection();
 
   const result = await pool.request()
-    .input('ActionId', sql.Int, id)
     .query(`
     SELECT
       A.ActionId,
       A.ReportedOn AS AssignedOn,
       U1.Username AS ReportedBy,
+      U1.Email AS ReportedByEmail,
       U2.Username AS AssignedTo,
+      U2.Email AS AssignedToEmail,
       I.Item AS Item,
       S.StatusId,
       A.ActionDescription,
@@ -36,8 +33,6 @@ export async function GET(
       [STATUS] S ON A.StatusId = S.StatusId
     JOIN
       CENTERS C ON A.CenterId = C.CenterId
-    WHERE
-      ActionId = @ActionId
     `);
 
   const actions = result.recordset;

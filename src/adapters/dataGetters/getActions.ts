@@ -1,18 +1,17 @@
+export async function getActions() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}api/actions`, { cache: 'no-cache' });
+
+  const action = await res.json();
+
+  const actionRecordset = action
+
+  return actionRecordset;
+}
+
 export async function getAction(actionId: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}api/actions/${actionId}`, { cache: 'no-cache' });
 
-  interface Action {
-    AssignedOn: Date;
-    ReportedBy: string;
-    AssignedTo: string;
-    Item: string;
-    StatusId: number;
-    ActionDescription: string;
-    Center: string;
-    Resolution: null | string
-  }
-
-  const action = await res.json() as Action[];
+  const action = await res.json();
 
   const actionRecordset = action[0]
 

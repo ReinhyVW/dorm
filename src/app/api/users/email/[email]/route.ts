@@ -14,7 +14,11 @@ export async function GET(
   const result = await pool.request()
     .input('Email', sql.VarChar, email)
     .query(`
-    SELECT * FROM USERS WHERE Email = @Email
+      SELECT U.UserId, U.Username, U.Email, R.[Role], C.Center
+      FROM USERS U
+      INNER JOIN ROLES R ON U.RoleId = R.RoleId
+      INNER JOIN CENTERS C ON U.CenterId = C.CenterId
+      WHERE Email = @Email
   `);
 
   const users = result.recordset;

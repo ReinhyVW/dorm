@@ -31,9 +31,9 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-2">
             <Button color="primary" size="lg" onClick={() => { router.push("/meeting/" + (document.querySelector('#datepicker') as HTMLInputElement).value) }}>New Meeting</Button>
             <Badge classNames={{ base: "w-full shrink flex" }} content="1" color="primary">
-              <Button className="w-full" color="primary" size="lg" onClick={() => { router.push("/actions/53") }}>Check Actions</Button>
+              <Button className="w-full" color="primary" size="lg" onClick={() => { router.push(`/actions/${localStorage.getItem("loggedUserId")}`) }}>Check Actions</Button>
             </Badge>
-            <Button color="primary" size="lg" isDisabled>Dashboard</Button>
+            <Button color="primary" size="lg" onClick={() => { router.push(`/actions`) }}>Dashboard</Button>
             <Button color="primary" size="lg" onClick={() => { router.push("/admin") }}>Admin</Button>
           </div>
         </div>

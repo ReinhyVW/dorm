@@ -1,6 +1,7 @@
 export type ColumnData = {
   key: string;
   label: string;
+  sortable?: boolean;
 };
 
 export type Columns = ColumnData[];
@@ -37,3 +38,18 @@ export interface Acuteness {
   acutenessId: number;
   acutenessName: string;
 }
+
+export type ActionsData = {
+  ActionId: number;
+  AssignedOn: Date;
+  ReportedBy: string;
+  AssignedTo: string;
+  Item: string;
+  StatusId: number;
+  ActionDescription: string;
+  Acuteness: string;
+  Center: string;
+  Resolution: null | string;
+}
+
+export type Actions = Actions[]

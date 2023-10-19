@@ -19,5 +19,5 @@ export async function getUserByEmail(email: string) {
 
   const user = await res.json();
 
-  return user
+  return user[0]
 }
