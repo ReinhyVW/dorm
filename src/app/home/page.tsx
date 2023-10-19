@@ -28,13 +28,15 @@ export default function Home() {
             <Datepicker readOnly={false} selectedDate={null} />
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          {/* <div className="grid items-center grid-cols-2 gap-2"> */}
+          
+          <div className="grid items-center">
             <Button color="primary" size="lg" onClick={() => { router.push("/meeting/" + (document.querySelector('#datepicker') as HTMLInputElement).value) }}>New Meeting</Button>
-            <Badge classNames={{ base: "w-full shrink flex" }} content="1" color="primary">
+            {/* <Badge classNames={{ base: "w-full shrink flex" }} content="1" color="primary">
               <Button className="w-full" color="primary" size="lg" onClick={() => { router.push(`/actions/${localStorage.getItem("loggedUserId")}`) }}>Check Actions</Button>
             </Badge>
             <Button color="primary" size="lg" onClick={() => { router.push(`/actions`) }}>Dashboard</Button>
-            <Button color="primary" size="lg" onClick={() => { router.push("/admin") }}>Admin</Button>
+            <Button color="primary" size="lg" onClick={() => { router.push("/admin") }}>Admin</Button> */}
           </div>
         </div>
       </main>
