@@ -19,7 +19,7 @@ export default function Home() {
     <>
       <main className="h-screen w-screen flex items-center justify-center gap-4">
         <div className="flex flex-col gap-8">
-          <Image as={NextImage} src={'/dhgLogo.jpg'} alt="logo" width={300} height={300} />
+          <Image as={NextImage} src={`${process.env.NEXT_PUBLIC_DB_HOST}/dhgLogo.jpg`} alt="logo" width={300} height={300} />
           <h1 className="mb-4 text-center font-bold leading-none tracking-tight text-primary-500 text-4xl md:text-5xl lg:text-6xl dark:text-white">DORM</h1>
         </div>
         <div className="w-1/4 items-center justify-center flex flex-col gap-8">
