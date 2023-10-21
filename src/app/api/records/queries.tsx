@@ -5,21 +5,7 @@ import getConnection from "../db"
 import { Resend } from 'resend';
 import { Acuteness } from "@/types"
 
-export const acuteness: Acuteness[] = [
-  {
-    acutenessId: 1,
-    acutenessName: "Urgent"
-  },
-  {
-    acutenessId: 2,
-    acutenessName: "Normal"
-  },
-  {
-    acutenessId: 3,
-    acutenessName: "Non-Critical"
-  }
-]
-
+import { getAcuteness } from '@/adapters/dataGetters/getAcuteness';
 
 const resend = new Resend('re_123456789');
 
@@ -51,6 +37,8 @@ export async function submitAction(data: any) {
   const assignedTo = assigned[2]
   const centerId = center
   const acutenessLevel = acutenessSelected[2]
+
+  const acuteness: Acuteness[] = await getAcuteness()
 
   const acutenessName = acuteness[acutenessLevel]
 
