@@ -97,13 +97,13 @@ export async function submitAction(data: any) {
 
   const request = actionData
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}api/send`, {
-    method: 'POST',
-    body: JSON.stringify(request),
-    headers: { 'Content-Type': 'application/json' }
-  })
+  // const res = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}api/send`, {
+  //   method: 'POST',
+  //   body: JSON.stringify(request),
+  //   headers: { 'Content-Type': 'application/json' }
+  // })
 
-  const resEmail = res.json()
+  // const resEmail = res.json()
 
   return actionId
 }
