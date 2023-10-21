@@ -35,11 +35,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           readOnly={true}
           labelPlacement="outside-left"
           label="Assigned On"
-          value={
-            actionData?.AssignedOn
-              ? new Date(actionData.AssignedOn).toLocaleString()
-              : ""
-          }
+          value={"1"}
         />
         <Input
           className="w-full"
@@ -47,7 +43,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           readOnly={true}
           labelPlacement="outside-left"
           label="Reported By"
-          value={actionData?.ReportedBy || ""}
+          value={"1"}
         />
         <Input
           className="w-full"
@@ -55,7 +51,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           readOnly={true}
           labelPlacement="outside-left"
           label="Issue Type"
-          value={actionData?.Item || ""}
+          value={""}
         />
 
         <Input
@@ -64,15 +60,12 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           readOnly={true}
           labelPlacement="outside-left"
           label="Center"
-          value={actionData?.Center || ""}
+          value={""}
         />
-
-        {actionData.StatusId}
-
         <Textarea
           label="Issue Description"
           readOnly={true}
-          defaultValue={actionData?.ActionDescription || ""}
+          defaultValue={""}
         />
       </CardBody>
     </Card>
