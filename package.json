@@ -19,7 +19,8 @@
     "mssql": "^10.0.1",
     "next": "13.5.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "resend": "^1.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -2,6 +2,27 @@ import sql from 'mssql';
 
 import getConnection from "../db"
 
+import { Resend } from 'resend';
+import { Acuteness } from "@/types"
+
+export const acuteness: Acuteness[] = [
+  {
+    acutenessId: 1,
+    acutenessName: "Urgent"
+  },
+  {
+    acutenessId: 2,
+    acutenessName: "Normal"
+  },
+  {
+    acutenessId: 3,
+    acutenessName: "Non-Critical"
+  }
+]
+
+
+const resend = new Resend('re_123456789');
+
 export async function submitGeneral(meetingData: any) {
   const pool = await getConnection()
 
@@ -21,13 +42,17 @@ export async function submitGeneral(meetingData: any) {
 }
 
 export async function submitAction(data: any) {
-  const { reported, assigned, center, description, acuteness, item } = data;
+  const { reported, assigned, center, description, acutenessSelected, item } = data;
+
+
 
   const status = 1
   const reportedBy = reported[2]
   const assignedTo = assigned[2]
   const centerId = center
-  const acutenessLevel = acuteness[2]
+  const acutenessLevel = acutenessSelected[2]
+
+  const acutenessName = acuteness[acutenessLevel]
 
   const pool = await getConnection();
 
@@ -50,22 +75,62 @@ export async function submitAction(data: any) {
     `);
 
   const actionId = await pool.request()
-    .query('')
+    .query('SELECT MAX(ActionId) FROM Actions')
+
+  const actionData = await pool.request()
+    .input('ActionId', sql.Int, actionId)
+    .query(`
+    SELECT
+    A.ActionId,
+    A.ReportedOn AS AssignedOn,
+    U1.Username AS ReportedBy,
+    U2.Username AS AssignedTo,
+    I.Item AS Item,
+    S.StatusId,
+    A.ActionDescription,
+    A.Acuteness,
+    C.Center,
+    A.Resolution
+  FROM
+    ACTIONS A
+  JOIN
+    USERS U1 ON A.ReportedBy = U1.UserId
+  JOIN
+    USERS U2 ON A.AssignedTo = U2.UserId
+  JOIN
+    ITEMS I ON A.ItemId = I.ItemId
+  JOIN
+    [STATUS] S ON A.StatusId = S.StatusId
+  JOIN
+    CENTERS C ON A.CenterId = C.CenterId
+  WHERE
+    ActionId = @ActionId
+    `)
+
+  const request = actionData
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}api/send`, {
+    method: 'POST',
+    body: JSON.stringify(request),
+    headers: { 'Content-Type': 'application/json' }
+  })
+
+  const resEmail = res.json()
 
   return actionId
 }
 
-export async function submitComment(data:  any) {
+export async function submitComment(data: any) {
   const pool = await getConnection()
 
   const { generalId, date, item, value } = data
 
   const recordResult = await pool.request()
-  .input('GeneralId', sql.Int, generalId)
-  .input('RecordDate', sql.DateTime, date)
-  .input('RecordItem', sql.Int, item)
-  .input('Value', sql.VarChar, value)
-  .query(`
+    .input('GeneralId', sql.Int, generalId)
+    .input('RecordDate', sql.DateTime, date)
+    .input('RecordItem', sql.Int, item)
+    .input('Value', sql.VarChar, value)
+    .query(`
     INSERT INTO MEETINGCOMMENTS (GeneralId, MeetingCommentDate, MeetingCommentItem, [Value])
     VALUES (@GeneralId, @RecordDate, @RecordItem, @Value);
   `);

@@ -3,11 +3,7 @@
 import React, { useEffect } from "react";
 import { Select, SelectItem, Selection } from "@nextui-org/react";
 import { getStatus } from "@/adapters/dataGetters/getStatus";
-
-interface StatusData {
-  StatusId: number;
-  Status: string;
-}
+import { StatusData } from "@/types";
 
 interface StatusSelectProps {
   selectedStatus: string;

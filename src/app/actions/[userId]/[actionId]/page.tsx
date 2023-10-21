@@ -14,8 +14,8 @@ import { updateAction } from "@/adapters/dataPutters/updateAction";
 
 import StatusSelect from "@/components/inputs/StatusSelect";
 import UserBanner from "@/components/UserBanner";
-import CommentInput from "../../components/CommentInput";
-import Comment from "../../components/Comment";
+import CommentInput from "../../components/comment/CommentInput";
+import Comment from "../../components/comment/Comment";
 
 type ActionData = {
   AssignedOn: Date;

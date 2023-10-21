@@ -14,7 +14,7 @@ export default function GeneralSection({ date }: GeneralSectionProps) {
 
   const cancel = () => {
     deleteMeetingData();
-    router.push('/');
+    router.push('/home');
   };
 
   const savedDate = new Date(date.date);
@@ -79,7 +79,7 @@ export default function GeneralSection({ date }: GeneralSectionProps) {
     await saveRecord(data);
 
     deleteMeetingData();
-    // router.push('/');
+    router.push('/home');
   };
 
   return (

@@ -12,7 +12,7 @@ export type RowData = {
 
 export type Rows = RowData[];
 
-export interface Centers {
+export type Centers = {
   CenterId: number;
   Center: string;
   Address: string;
@@ -20,7 +20,7 @@ export interface Centers {
   Contact: string;
 }
 
-export interface Users {
+export type Users = {
   UserId: number;
   Username: string;
   Email: null | string;
@@ -35,21 +35,30 @@ export enum Role {
 }
 
 export interface Acuteness {
-  acutenessId: number;
-  acutenessName: string;
+  AcutenessId: number;
+  Acuteness: string;
 }
 
-export type ActionsData = {
+export type Actions = {
   ActionId: number;
   AssignedOn: Date;
   ReportedBy: string;
-  AssignedTo: string;
+  ReportedByEmail: Email | null;
+  AssignedTo: AssignedTo;
+  AssignedToEmail: Email | null;
   Item: string;
   StatusId: number;
+  Status: string;
   ActionDescription: string;
   Acuteness: string;
+  AcutenessName: string;
   Center: string;
   Resolution: null | string;
 }
 
 export type Actions = Actions[]
+
+export type Status = {
+  StatusId: number;
+  Status: string;
+}

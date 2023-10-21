@@ -19,14 +19,14 @@ export default function SignIn() {
 
   return (
     <main className='w-screen h-screen flex items-center justify-center bg-danger-50'>
-      <div className='w-1/2 h-4/6 flex rounded-xl'>
+      <div className='w-11/12 md:w-3/4 xl:w-1/2 h-4/6 flex rounded-xl pr-12'>
         <div className="w-1/2 h-full bg-primary-300 flex flex-col items-center justify-evenly rounded-xl">
-          <h2 className="text-center text-white font-semibold text-2xl ">Report all of your issues, relax and <br /> track your solutions</h2>
+          <h2 className="text-center w-10/12 text-white font-semibold text-2xl whitespace-break-spaces">Report all of your issues, relax and <br /> track your solutions</h2>
           <Image alt="Rocket heading at the sky" width={300} src="/loginBg.svg" />
           <Image alt="Vertical Dots" width={100} src="/loadingDots.svg" />
         </div>
 
-        <div className="w-1/2 h-full bg-gradient-to-tr from-primary-700 to-primary-900 flex flex-col items-center justify-evenly rounded-xl -ml-6">
+        <div className="w-1/2 h-full bg-gradient-to-tr from-primary-700 to-primary-900 flex flex-col items-center justify-evenly rounded-xl -ml-4">
           <div className="w-10/12 h-full flex flex-col items-center justify-center gap-12">
             <h1 className="text-default-100 text-center font-semibold text-2xl">Sign In</h1>
 

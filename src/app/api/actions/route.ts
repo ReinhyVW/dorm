@@ -17,8 +17,10 @@ export async function GET() {
       U2.Email AS AssignedToEmail,
       I.Item AS Item,
       S.StatusId,
+      S.Status,
       A.ActionDescription,
       A.Acuteness,
+      AC.Acuteness AS AcutenessName,
       C.Center,
       A.Resolution
     FROM
@@ -33,7 +35,12 @@ export async function GET() {
       [STATUS] S ON A.StatusId = S.StatusId
     JOIN
       CENTERS C ON A.CenterId = C.CenterId
+    JOIN
+      ACUTENESS AC ON A.Acuteness = AC.AcutenessId
     `);
+
+
+    
 
   const actions = result.recordset;
 
@@ -73,3 +80,6 @@ export async function PUT(
     })
   }
 }
+
+
+
