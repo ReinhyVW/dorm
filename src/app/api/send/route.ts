@@ -2,6 +2,8 @@
 // import { NextResponse } from 'next/server';
 // import { Resend } from 'resend';
 
+import { NextResponse } from "next/server";
+
 // const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 
 // export async function POST(request: any) {
@@ -23,3 +25,7 @@
 //     return NextResponse.json({ error });
 //   }
 // }
+
+export async function POST() {
+  return NextResponse.json("Hola");
+}
