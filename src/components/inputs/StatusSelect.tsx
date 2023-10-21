@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { Select, SelectItem, Selection } from "@nextui-org/react";
 import { getStatus } from "@/adapters/dataGetters/getStatus";
-import { StatusData } from "@/types";
+import { Status } from "@/types";
 
 interface StatusSelectProps {
   selectedStatus: string;
@@ -12,7 +12,7 @@ interface StatusSelectProps {
 const StatusSelect: React.FC<StatusSelectProps> = ({ selectedStatus }) => {
   const [value, setValue] = React.useState<Selection>(new Set<string>());
   // const [currentStatus, setCurrentStatus] = React.useState<string>("")
-  const [statusData, setStatusData] = React.useState<StatusData[]>([]);
+  const [statusData, setStatusData] = React.useState<Status[]>([]);
 
   function getStatusById(statusId: number) {
     return statusData?.find((status) => status.StatusId === statusId);
