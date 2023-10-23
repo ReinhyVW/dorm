@@ -62,3 +62,9 @@ export type Status = {
   StatusId: number;
   Status: string;
 }
+
+export type Items = {
+  ItemId: number;
+  Item: string;
+  ItemType: string
+}

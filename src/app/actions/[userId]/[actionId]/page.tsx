@@ -89,7 +89,7 @@ export default function Action({ params }: ActionProps) {
     } catch (error) {
       console.error(error)
     } finally {
-      router.push('/')
+      router.push('/home')
     }
   }
 
@@ -141,7 +141,7 @@ export default function Action({ params }: ActionProps) {
             value={actionData?.Center || ""}
           />
 
-          <StatusSelect selectedStatus={statusId} />
+          <StatusSelect selectedStatus={statusId} id="selectedStatus" showStatus={true} />
 
           <Textarea
             label="Issue Description"
@@ -165,7 +165,7 @@ export default function Action({ params }: ActionProps) {
             color="danger"
             variant="flat"
             onClick={() => {
-              router.push("/")
+              router.push("/home")
             }}
           >
             Cancel

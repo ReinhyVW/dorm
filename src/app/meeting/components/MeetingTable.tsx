@@ -30,10 +30,10 @@ export default function MeetingTable({ columns, rows, id, }: { columns: any; row
         return <TableText title="Comment" id={row.ItemId + "-comment-meetingData"} item={row.Item} />
 
       case "reported":
-        return <UserSelect selectedCenter="" id={row.ItemId + "-reported-action"} />;
+        return <UserSelect selectedUser="" id={row.ItemId + "-reported-action"} />;
 
       case "assigned":
-        return <UserSelect selectedCenter="" id={row.ItemId + "-assigned-action"} />;
+        return <UserSelect selectedUser="" id={row.ItemId + "-assigned-action"} />;
 
       case "center":
         return <CenterSelect selectedCenter="" id={row.ItemId + "-center-action"} />;
@@ -42,7 +42,7 @@ export default function MeetingTable({ columns, rows, id, }: { columns: any; row
         return <TableText title="Description" id={row.ItemId + "-description-action"} item={row.Item} />
 
       case "acuteness":
-        return <AcutenessSelect selectedCenter="" id={row.ItemId + "-acuteness-action"} />
+        return <AcutenessSelect selectedAcuteness="" id={row.ItemId + "-acuteness-action"} />
 
       default:
         return <OptionCell id={`${columnKey.toString()}-${row.ItemId}-meetingData`} />;

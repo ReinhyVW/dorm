@@ -1,31 +1,25 @@
-// import { EmailTemplate } from '@/components/email';
-// import { NextResponse } from 'next/server';
-// import { Resend } from 'resend';
+import EmailTemplate from '@/components/email';
+import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
-import { NextResponse } from "next/server";
+const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 
-// const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
+export async function POST(request: any) {
+  const data = await request.json();
 
-// export async function POST(request: any) {
-//   const actionData = await request.json();
+  console.log(data);
 
-//   const assignedTo = actionData.AssignedTo
-//   const reportedBy = actionData.ReportedBy
+  try {
+    const data = await resend.emails.send({
+      from: 'mcaballero@dhgmc.com',
+      to: ['mcaballero@dhgmc.com'],
+      subject: 'Hello world',
+      react: EmailTemplate({ ReportedBy: ReportedBy, AssignedTo: AssignedTo, StatusId: StatusId, CenterId: CenterId, ActionDescription: ActionDescription, Acuteness: Acuteness, ItemId: ItemId }),
+      text: ""
+    });
 
-//   try {
-//     const data = await resend.emails.send({
-//       from: 'Acme <onboarding@resend.dev>',
-//       to: ['delivered@resend.dev'],
-//       subject: 'Hello world',
-//       react: EmailTemplate({ AssignedTo: String(assignedTo) }),
-//     });
-
-//     return NextResponse.json(data);
-//   } catch (error) {
-//     return NextResponse.json({ error });
-//   }
-// }
-
-export async function POST() {
-  return NextResponse.json("Hola");
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json({ error });
+  }
 }

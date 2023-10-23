@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 
 import { Icon } from "@tremor/react";
-import { PlusIcon, DotsVerticalIcon, ChevronDownIcon, SearchIcon } from "@heroicons/react/outline";
+import { DotsVerticalIcon, ChevronDownIcon, SearchIcon } from "@heroicons/react/outline";
 
 import { capitalize } from "../../domain/capitalize";
 
@@ -24,6 +24,8 @@ import { getStatus } from "@/adapters/dataGetters/getStatus";
 import { columns } from "../../domain/columns"
 
 import Loading from "@/components/Loading";
+import ActionModal from "../action/ActionModal";
+import { useRouter } from "next/navigation";
 
 const acutenessColorMap: Record<string, ChipProps["color"]> = {
   1: "danger",
@@ -41,13 +43,19 @@ export default function ActionTable() {
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
   const [acutenessFilter, setAcutenessFilter] = React.useState<Selection>("all");
-  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
+  const [statusFilter, setStatusFilter] = React.useState<Selection>(new Set([
+    "1",
+    "2",
+    "3"
+  ]));
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "AssignedOn",
     direction: "descending",
   });
   const [page, setPage] = React.useState(1);
+
+  const router = useRouter()
 
   const pages = Math.ceil(actions.length / rowsPerPage);
 
@@ -187,7 +195,8 @@ export default function ActionTable() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
+                <DropdownItem onClick={() => {router.push(`${process.env.NEXT_PUBLIC_DB_HOST}/actions/${localStorage.getItem("loggedUserId")
+}/${action.ActionId}`)}}>View Action</DropdownItem>
                 <DropdownItem>Send Reminder</DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -307,14 +316,9 @@ export default function ActionTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              className="bg-foreground text-background"
-              endContent={<Icon icon={PlusIcon} color="neutral" />}
-              size="sm"
-              onClick={() => { console.log(status) }}
-            >
-              Add New
-            </Button>
+
+            <ActionModal />
+
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -387,45 +391,47 @@ export default function ActionTable() {
   );
 
   return (
-    <Table
-      isCompact
-      className="w-full"
-      removeWrapper
-      aria-label="Example table with custom cells, pagination and sorting"
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      checkboxesProps={{
-        classNames: {
-          wrapper: "after:bg-foreground after:text-background text-background",
-        },
-      }}
-      classNames={classNames}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.key}
-            align={column.key === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
-            {column.label}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={<Loading />} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.ActionId}>
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <>
+      <Table
+        isCompact
+        className="w-full h-full z-40"
+        removeWrapper
+        aria-label="Example table with custom cells, pagination and sorting"
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        checkboxesProps={{
+          classNames: {
+            wrapper: "after:bg-foreground after:text-background text-background",
+          },
+        }}
+        classNames={classNames}
+        selectedKeys={selectedKeys}
+        selectionMode="multiple"
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.key}
+              align={column.key === "actions" ? "center" : "start"}
+              allowsSorting={column.sortable}
+            >
+              {column.label}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={<Loading />} items={sortedItems}>
+          {(item) => (
+            <TableRow key={item.ActionId}>
+              {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </>
   );
 }

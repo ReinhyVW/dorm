@@ -1,18 +1,18 @@
 "use client"
 
 import React, { useEffect } from "react";
-import { Centers } from "@/types";
+import { Items } from "@/types";
 import { Select, SelectItem, Selection } from "@nextui-org/react";
-import { getCenters } from "@/adapters/dataGetters/getCenters";
+import { getItems } from "@/adapters/dataGetters/getItems";
 
 interface CenterSelectProps {
-  selectedCenter: string;
+  selectedItem: string;
   id: string;
 }
 
-const CenterSelect: React.FC<CenterSelectProps> = ({ selectedCenter, id }) => {
+const ItemSelect: React.FC<CenterSelectProps> = ({ selectedItem: selectedItem, id }) => {
   const [value, setValue] = React.useState<Selection>(new Set<string>());
-  const [centerData, setCenterData] = React.useState<Centers[]>([]);
+  const [itemData, setItemData] = React.useState<Items[]>([]);
 
   useEffect(() => {
     localStorage.setItem(id, String(Array.from(value)[0]));
@@ -21,15 +21,15 @@ const CenterSelect: React.FC<CenterSelectProps> = ({ selectedCenter, id }) => {
   useEffect(() => {
     const loadStatusData = async () => {
       try {
-        const centerData = await getCenters();
-        setCenterData(centerData);
+        const itemData = await getItems();
+        setItemData(itemData);
       } catch (err) {
         console.error("An error occurred while loading status data");
       }
     };
 
     loadStatusData();
-  }, [selectedCenter]);
+  }, []);
 
   return (
     <div className="p-1 flex w-full max-w-xs flex-col gap-2">
@@ -38,13 +38,13 @@ const CenterSelect: React.FC<CenterSelectProps> = ({ selectedCenter, id }) => {
         variant="flat"
         id={id}
         placeholder="Please select a status"
-        defaultSelectedKeys={selectedCenter}
+        defaultSelectedKeys={selectedItem}
         className="w-full"
         onSelectionChange={setValue}
       >
-        {centerData?.map((center) => (
-          <SelectItem key={center.CenterId} value={center.CenterId}>
-            {center.Center}
+        {itemData?.map((item) => (
+          <SelectItem key={item.ItemId} value={item.ItemId}>
+            {item.Item}
           </SelectItem>
         ))}
       </Select>
@@ -52,4 +52,4 @@ const CenterSelect: React.FC<CenterSelectProps> = ({ selectedCenter, id }) => {
   );
 };
 
-export default CenterSelect;
+export default ItemSelect;

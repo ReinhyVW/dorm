@@ -7,11 +7,12 @@ import { Status } from "@/types";
 
 interface StatusSelectProps {
   selectedStatus: string;
+  id: string;
+  showStatus: boolean;
 }
 
-const StatusSelect: React.FC<StatusSelectProps> = ({ selectedStatus }) => {
+const StatusSelect: React.FC<StatusSelectProps> = ({ selectedStatus, id, showStatus }) => {
   const [value, setValue] = React.useState<Selection>(new Set<string>());
-  // const [currentStatus, setCurrentStatus] = React.useState<string>("")
   const [statusData, setStatusData] = React.useState<Status[]>([]);
 
   function getStatusById(statusId: number) {
@@ -19,8 +20,12 @@ const StatusSelect: React.FC<StatusSelectProps> = ({ selectedStatus }) => {
   }
 
   useEffect(() => {
-    localStorage.setItem("selectedStatus", String(Array.from(value)[0]));
-  }, [value]);
+    localStorage.setItem(id, String(Array.from(value)[0]));
+  }, [value, id]);
+
+  useEffect(() => {
+    localStorage.setItem(id, selectedStatus);
+  }, [selectedStatus, id]);
 
   useEffect(() => {
     const loadStatusData = async () => {
@@ -31,8 +36,6 @@ const StatusSelect: React.FC<StatusSelectProps> = ({ selectedStatus }) => {
         console.error("An error occurred while loading status data");
       }
     };
-
-    localStorage.setItem("selectedStatus", selectedStatus);
 
     loadStatusData();
   }, [selectedStatus]);
@@ -53,7 +56,8 @@ const StatusSelect: React.FC<StatusSelectProps> = ({ selectedStatus }) => {
           </SelectItem>
         ))}
       </Select>
-      Current Status: {getStatusById(Number(selectedStatus))?.Status}
+      <p className={`${showStatus ? "flex" : "hidden"}`}>Current Status: {getStatusById(Number(selectedStatus))?.Status}</p>
+      <span className="hidden"></span>
     </div>
   );
 };

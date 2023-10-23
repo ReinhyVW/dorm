@@ -30,8 +30,6 @@ export async function submitGeneral(meetingData: any) {
 export async function submitAction(data: any) {
   const { reported, assigned, center, description, acutenessSelected, item } = data;
 
-
-
   const status = 1
   const reportedBy = reported[2]
   const assignedTo = assigned[2]
@@ -44,9 +42,9 @@ export async function submitAction(data: any) {
 
   const pool = await getConnection();
 
-  // const lastRecordId = await pool.request().query(`SELECT MAX(RecordId) FROM RECORDS`)
+  const lastRecordId = await pool.request().query(`SELECT MAX(RecordId) FROM RECORDS`)
 
-  // const recordId = Number(lastRecordId) + 1;
+  const recordId = Number(lastRecordId) + 1;
 
   const actionResult = await pool.request()
     .input('ReportedBy', sql.Int, reportedBy)
@@ -56,7 +54,7 @@ export async function submitAction(data: any) {
     .input('ActionDescription', sql.VarChar, description)
     .input('Acuteness', sql.Int, acutenessLevel)
     .input('ItemId', sql.VarChar, item)
-    // .input('RecordId', sql.Int, recordId)
+    .input('RecordId', sql.Int, recordId)
     .query(`
       INSERT INTO ACTIONS (ReportedBy, AssignedTo, StatusId, CenterId, ActionDescription, Acuteness, ItemId)
       VALUES (@ReportedBy, @AssignedTo, @StatusId, @CenterId, @ActionDescription, @Acuteness, @ItemId);

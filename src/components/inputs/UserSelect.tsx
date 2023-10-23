@@ -1,23 +1,25 @@
-"use client"
-
-import { Users } from "@/types";
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Select, SelectItem, Selection } from "@nextui-org/react";
 import { getUsers } from "@/adapters/dataGetters/getUsers";
+import { Users } from "@/types";
 
-interface CenterSelectProps {
-  selectedCenter: string;
+interface UserSelectProps {
+  selectedUser: string;
   id: string;
 }
 
-const UserSelect: React.FC<CenterSelectProps> = ({ selectedCenter: selectedUser, id }) => {
-  const [value, setValue] = React.useState<Selection>(new Set<string>());
-  const [userData, setUserData] = React.useState<Users[]>([]);
+const UserSelect: React.FC<UserSelectProps> = ({ selectedUser, id }) => {
+  const [value, setValue] = useState<Selection>(new Set<string>());
+  const [userData, setUserData] = useState<Users[]>([]);
 
   useEffect(() => {
-    localStorage.setItem("selectedUser", String(Array.from(value)[0]));
-  }, [value]);
+    localStorage.setItem(id, String(Array.from(value)[0]));
+  }, [value, id]);
+
+  useEffect(() => {
+    const loggedUserId = localStorage.getItem("loggedUserId") || "";
+    localStorage.setItem(id, loggedUserId);
+  }, [id]);
 
   useEffect(() => {
     const loadStatusData = async () => {
@@ -29,10 +31,8 @@ const UserSelect: React.FC<CenterSelectProps> = ({ selectedCenter: selectedUser,
       }
     };
 
-    localStorage.setItem("selectedStatus", selectedUser);
-
     loadStatusData();
-  }, [selectedUser]);
+  }, []);
 
   return (
     <div className="p-1 flex w-full max-w-xs flex-col gap-2">
@@ -41,7 +41,7 @@ const UserSelect: React.FC<CenterSelectProps> = ({ selectedCenter: selectedUser,
         variant="flat"
         id={id}
         placeholder="Please select a user"
-        defaultSelectedKeys={selectedUser}
+        defaultSelectedKeys={[selectedUser]}
         className="w-full"
         onSelectionChange={setValue}
       >

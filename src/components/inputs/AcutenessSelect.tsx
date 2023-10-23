@@ -6,16 +6,16 @@ import { Acuteness } from "@/types";
 import { getAcuteness } from "@/adapters/dataGetters/getAcuteness";
 
 interface CenterSelectProps {
-  selectedCenter: string;
+  defautlAcuteness: string;
   id: string;
 }
 
-const AcutenessSelect: React.FC<CenterSelectProps> = ({ selectedCenter, id }) => {
+const AcutenessSelect: React.FC<CenterSelectProps> = ({ defautlAcuteness: defautlAcuteness, id }) => {
   const [selectedAcuteness, setSelectedAcuteness] = React.useState<Selection>(new Set([]));
   const [acuteness, setAcuteness] = React.useState<Acuteness[]>([])
 
   useEffect(() => {
-    localStorage.setItem(id, JSON.stringify(Array.from(selectedAcuteness)));
+    localStorage.setItem(id, JSON.stringify(Array.from(selectedAcuteness)[0]));
   }, [selectedAcuteness, id])
 
   useEffect(() => {
