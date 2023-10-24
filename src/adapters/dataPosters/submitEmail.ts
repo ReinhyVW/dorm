@@ -1,8 +1,6 @@
 export default async function submitEmail(data: any) {
   const { ActionId, AssignedOn, ReportedByUserId, ReportedBy, ReportedByEmail, AssignedToUserId, AssignedTo, AssignedToEmail, Item, Status, ActionDescription, Acuteness, Center } = data;
 
-  console.log("Llega a submitEmail")
-
   const On = AssignedOn?.toISOString();
 
   const request = { ActionId, On, ReportedByUserId, ReportedBy, ReportedByEmail, AssignedToUserId, AssignedTo, AssignedToEmail, Item, Status, ActionDescription, Acuteness, Center }
