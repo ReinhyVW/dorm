@@ -209,7 +209,7 @@ export default function ActionTable() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem onClick={() => {
-                  router.push(`${process.env.NEXT_PUBLIC_DB_HOST}/actions/${localStorage.getItem("loggedUserId")
+                  router.push(`/actions/${localStorage.getItem("loggedUserId")
                     }/${action.ActionId}`)
                 }}>View Action</DropdownItem>
                 <DropdownItem onClick={sendReminderEmail}>Send Reminder</DropdownItem>
