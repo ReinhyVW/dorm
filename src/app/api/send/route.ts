@@ -46,6 +46,7 @@ export async function POST(request: Request) {
       to: [AssignedToEmail], // Assuming 'AssignedToEmail' is the recipient's email
       subject: `Action Assignment #${ActionId}`,
       react: EmailTemplate(requestData), // Passing requestData instead of calling the function
+      text: ""
     });
 
     return NextResponse.json(data);
