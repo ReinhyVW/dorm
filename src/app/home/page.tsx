@@ -5,6 +5,7 @@ import NextImage from "next/image";
 import { useRouter } from 'next/navigation'
 import { Button, Image, Badge } from "@nextui-org/react";
 import Datepicker from "@/components/inputs/DatePicker";
+import { imagesSrc } from "../../../public/images";
 
 export default function Home() {
   const [loadingState, setLoadingState] = useState<boolean>(false);
@@ -19,7 +20,7 @@ export default function Home() {
     <>
       <main className="h-screen w-screen flex items-center justify-center gap-4">
         <div className="flex flex-col gap-8">
-          <Image as={NextImage} src={`/dhgLogo.jpg`} priority alt="logo" width={200} height={93.75} className="w-auto h-auto" />
+          <Image as={NextImage} src={imagesSrc.dhgLogo} priority alt="logo" width={200} height={93.75} className="w-auto h-auto" />
           <h1 className="mb-4 text-center font-bold leading-none tracking-tight text-primary-500 text-4xl md:text-5xl lg:text-6xl dark:text-white">DORM</h1>
         </div>
         <div className="w-1/4 items-center justify-center flex flex-col gap-8">
