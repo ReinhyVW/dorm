@@ -37,6 +37,7 @@ const AcutenessSelect: React.FC<CenterSelectProps> = ({ defaultAcuteness: defaul
       id={id}
       selectedKeys={selectedAcuteness}
       onSelectionChange={setSelectedAcuteness}
+      className="w-full"
     >
       {(acuteness: any) => <SelectItem value={acuteness.AcutenessId} key={acuteness.AcutenessId}>{acuteness.Acuteness}</SelectItem>}
     </Select>

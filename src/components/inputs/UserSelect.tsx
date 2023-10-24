@@ -35,14 +35,14 @@ const UserSelect: React.FC<UserSelectProps> = ({ selectedUser, id }) => {
   }, []);
 
   return (
-    <div className="p-1 flex w-full max-w-xs flex-col gap-2">
+    <div className="p-1 flex w-full max-w-xl flex-col gap-2">
       <Select
         label="Users"
         variant="flat"
         id={id}
         placeholder="Please select a user"
         defaultSelectedKeys={[selectedUser]}
-        className="w-full"
+        className="w-full min-w-[150px]"
         onSelectionChange={setValue}
       >
         {userData?.map((user) => (

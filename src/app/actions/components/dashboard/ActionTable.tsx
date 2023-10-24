@@ -26,6 +26,7 @@ import { columns } from "../../domain/columns"
 import Loading from "@/components/Loading";
 import ActionModal from "../action/ActionModal";
 import { useRouter } from "next/navigation";
+import submitEmail from "@/adapters/dataPosters/submitEmail";
 
 const acutenessColorMap: Record<string, ChipProps["color"]> = {
   1: "danger",
@@ -130,6 +131,18 @@ export default function ActionTable() {
     });
   }, [sortDescriptor, items]);
 
+  const sendReminderEmail = () => {
+    // { ActionId, AssignedOn, ReportedByUserId, ReportedBy, ReportedByEmail, AssignedToUserId, AssignedTo, AssignedToEmail, Item, Status, ActionDescription, Acuteness, Center }
+    // const ActionId = action.ActionId
+    // const AssignedOn = action.AssignedOn
+    // const ReportedByUserId= action.
+
+    // const data = {  }
+    // submitEmail(action.A)
+
+    alert("Soon to be implemented")
+  }
+
   const renderCell = React.useCallback((action: Action, columnKey: React.Key) => {
     const cellValue = action[columnKey as keyof Action];
 
@@ -195,9 +208,11 @@ export default function ActionTable() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={() => {router.push(`${process.env.NEXT_PUBLIC_DB_HOST}/actions/${localStorage.getItem("loggedUserId")
-}/${action.ActionId}`)}}>View Action</DropdownItem>
-                <DropdownItem>Send Reminder</DropdownItem>
+                <DropdownItem onClick={() => {
+                  router.push(`${process.env.NEXT_PUBLIC_DB_HOST}/actions/${localStorage.getItem("loggedUserId")
+                    }/${action.ActionId}`)
+                }}>View Action</DropdownItem>
+                <DropdownItem onClick={sendReminderEmail}>Send Reminder</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -205,7 +220,7 @@ export default function ActionTable() {
       default:
         return cellValue;
     }
-  }, []);
+  }, [router]);
 
 
   const onRowsPerPageChange = React.useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -414,7 +429,7 @@ export default function ActionTable() {
         onSortChange={setSortDescriptor}
       >
         <TableHeader columns={headerColumns}>
-          {(column) => (
+          {(column: any) => (
             <TableColumn
               key={column.key}
               align={column.key === "actions" ? "center" : "start"}
@@ -425,9 +440,9 @@ export default function ActionTable() {
           )}
         </TableHeader>
         <TableBody emptyContent={<Loading />} items={sortedItems}>
-          {(item) => (
+          {(item: any) => (
             <TableRow key={item.ActionId}>
-              {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+              {(columnKey: any) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
             </TableRow>
           )}
         </TableBody>

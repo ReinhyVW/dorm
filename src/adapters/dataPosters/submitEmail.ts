@@ -1,7 +1,11 @@
 export default async function submitEmail(data: any) {
-  const { ReportedBy, AssignedTo, StatusId, CenterId, ActionDescription, Acuteness, ItemId } = data;
+  const { ActionId, AssignedOn, ReportedByUserId, ReportedBy, ReportedByEmail, AssignedToUserId, AssignedTo, AssignedToEmail, Item, Status, ActionDescription, Acuteness, Center } = data;
 
-  const request = { ReportedBy, AssignedTo, StatusId, CenterId, ActionDescription, Acuteness, ItemId }
+  console.log("Llega a submitEmail")
+
+  const On = AssignedOn?.toISOString();
+
+  const request = { ActionId, On, ReportedByUserId, ReportedBy, ReportedByEmail, AssignedToUserId, AssignedTo, AssignedToEmail, Item, Status, ActionDescription, Acuteness, Center }
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}api/send`, {
     method: 'POST',

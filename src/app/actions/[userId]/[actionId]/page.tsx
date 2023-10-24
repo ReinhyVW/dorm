@@ -165,7 +165,7 @@ export default function Action({ params }: ActionProps) {
             color="danger"
             variant="flat"
             onClick={() => {
-              router.push("/home")
+              router.push("/actions")
             }}
           >
             Cancel

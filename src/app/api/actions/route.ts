@@ -51,24 +51,18 @@ export async function GET() {
 
 export async function POST(request: any) {
   try {
-    const { reported, assigned, center, description, acutenessSelected, item } = await request.json();
+    const { ReportedBy, AssignedTo, StatusId, CenterId, ActionDescription, Acuteness, ItemId } = await request.json();
 
-    const status = 1;
-    const reportedBy = reported;
-    const assignedTo = assigned;
-    const centerId = center;
-    const acutenessLevel = acutenessSelected[1];
-
-    const pool = await getConnection(); // Make sure to use the correct way to obtain a database connection
+    const pool = await getConnection()
 
     const actionResult = await pool.request()
-      .input('ReportedBy', sql.Int, reportedBy)
-      .input('AssignedTo', sql.Int, assignedTo)
-      .input('StatusId', sql.Int, status)
-      .input('CenterId', sql.Int, centerId)
-      .input('ActionDescription', sql.VarChar, description)
-      .input('Acuteness', sql.Int, acutenessLevel)
-      .input('ItemId', sql.VarChar, item)
+      .input('ReportedBy', sql.Int, ReportedBy)
+      .input('AssignedTo', sql.Int, AssignedTo)
+      .input('StatusId', sql.Int, StatusId)
+      .input('CenterId', sql.Int, CenterId)
+      .input('ActionDescription', sql.VarChar, ActionDescription)
+      .input('Acuteness', sql.Int, Acuteness)
+      .input('ItemId', sql.VarChar, ItemId)
       .query(`
         INSERT INTO ACTIONS (ReportedBy, AssignedTo, StatusId, CenterId, ActionDescription, Acuteness, ItemId)
         VALUES (@ReportedBy, @AssignedTo, @StatusId, @CenterId, @ActionDescription, @Acuteness, @ItemId);
@@ -81,40 +75,44 @@ export async function POST(request: any) {
     const actionData = await pool.request()
       .input('ActionId', sql.Int, actionId)
       .query(`
-        SELECT
-        A.ActionId,
-        A.ReportedOn AS AssignedOn,
-        U1.Username AS ReportedBy,
-        U2.Username AS AssignedTo,
-        I.Item AS Item,
-        S.StatusId,
-        A.ActionDescription,
-        A.Acuteness,
-        C.Center,
-        A.Resolution
-        FROM
-        ACTIONS A
-        JOIN
-        USERS U1 ON A.ReportedBy = U1.UserId
-        JOIN
-        USERS U2 ON A.AssignedTo = U2.UserId
-        JOIN
-        ITEMS I ON A.ItemId = I.ItemId
-        JOIN
-        [STATUS] S ON A.StatusId = S.StatusId
-        JOIN
-        CENTERS C ON A.CenterId = C.CenterId
-        WHERE
-        ActionId = @ActionId
+          SELECT
+            A.ActionId,
+            A.ReportedOn AS AssignedOn,
+            U1.UserId AS ReportedByUserId,
+            U1.Username AS ReportedBy,
+            U1.Email AS ReportedByEmail,
+            U2.UserId AS AssignedToUserId,
+            U2.Username AS AssignedTo,
+            U2.Email AS AssignedToEmail,
+            I.Item AS Item,
+            S.Status,
+            A.ActionDescription,
+            AC.Acuteness AS Acuteness,
+            C.Center,
+            A.Resolution
+          FROM
+            ACTIONS A
+          JOIN
+            USERS U1 ON A.ReportedBy = U1.UserId
+          JOIN
+            USERS U2 ON A.AssignedTo = U2.UserId
+          JOIN
+            ITEMS I ON A.ItemId = I.ItemId
+          JOIN
+            [STATUS] S ON A.StatusId = S.StatusId
+          JOIN
+            CENTERS C ON A.CenterId = C.CenterId
+          JOIN
+            ACUTENESS AC ON A.Acuteness = AC.AcutenessId
+          WHERE ActionId = @ActionId
       `);
 
-    const requestAnswer = actionData.recordset;
-    console.log(requestAnswer)
+    const requestAnswer = actionData.recordset[0];
 
-    const emailResponse = await submitEmail(actionData)
+    const emailResponse = await submitEmail(requestAnswer)
     
     return NextResponse.json({
-      message: 'Record was successfully deleted',
+      message: 'Action was successfully created',
     });
   } catch (error) {
     // Handle any errors and send an appropriate response

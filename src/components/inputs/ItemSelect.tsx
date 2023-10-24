@@ -32,9 +32,9 @@ const ItemSelect: React.FC<CenterSelectProps> = ({ selectedItem: selectedItem, i
   }, []);
 
   return (
-    <div className="p-1 flex w-full max-w-xs flex-col gap-2">
+    <div className="p-1 flex w-full max-w-xl flex-col gap-2">
       <Select
-        label="Action Status"
+        label="Item"
         variant="flat"
         id={id}
         placeholder="Please select a status"

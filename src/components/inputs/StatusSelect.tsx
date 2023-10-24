@@ -41,7 +41,7 @@ const StatusSelect: React.FC<StatusSelectProps> = ({ selectedStatus, id, showSta
   }, [selectedStatus]);
 
   return (
-    <div className="p-1 flex w-full max-w-xs flex-col gap-2">
+    <div className="p-1 flex w-full max-w-xl flex-col gap-2">
       <Select
         label="Action Status"
         variant="flat"

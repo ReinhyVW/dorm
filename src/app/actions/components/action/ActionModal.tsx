@@ -1,4 +1,6 @@
 import React from "react";
+import { useRouter } from "next/navigation";
+
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Textarea } from "@nextui-org/react";
 import { Icon } from "@tremor/react";
 import { PlusIcon } from "@heroicons/react/outline";
@@ -13,6 +15,8 @@ export default function ActionModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [assignedBy, setAssignedBy] = React.useState<any>("");
   const [actionDescription, setActionDescription] = React.useState<any>("");
+
+  const router = useRouter()
 
   React.useEffect(() => {
     const selectedUser: string | null = localStorage.getItem("loggedUserId")
@@ -36,6 +40,8 @@ export default function ActionModal() {
     }
     setActionDescription("")
 
+    router.refresh
+
     onClose()
   }
 
@@ -45,13 +51,13 @@ export default function ActionModal() {
     const StatusId = localStorage.getItem("statusId-action")
     const CenterId = localStorage.getItem("centerId-action")
     const ActionDescription = localStorage.getItem("actionDescription-action")
-    const Acuteness = localStorage.getItem("acuteness-action")
+    const Acuteness = localStorage.getItem("acuteness-action")![1]
     const ItemId = localStorage.getItem("itemId-action")
 
     const data = { ReportedBy, AssignedTo, StatusId, CenterId, ActionDescription, Acuteness, ItemId }
 
     submitAction(data)
-    // clearClose()
+    clearClose()
   }
 
   return (
@@ -67,16 +73,16 @@ export default function ActionModal() {
         </Button>
       </div>
       <Modal backdrop="blur" isOpen={isOpen} onClose={onClose}>
-        <ModalContent>
-          {(onClose) => (
+        <ModalContent className="max-w-lg">
+          {(onClose: any) => (
             <>
               <ModalHeader className="flex flex-col gap-1">Create Action</ModalHeader>
-              <ModalBody>
+              <ModalBody className="max-w-xl">
                 <UserSelect selectedUser={assignedBy} id="reportedBy-action" />
                 <UserSelect selectedUser={""} id="assignedTo-action" />
                 <StatusSelect selectedStatus="1" id="statusId-action" showStatus={false} />
                 <CenterSelect selectedCenter="" id="centerId-action" />
-                <Textarea label="Action Description" id="actionDescription-action" value={actionDescription} onValueChange={setActionDescription} />
+                <Textarea className="w-full" label="Action Description" id="actionDescription-action" value={actionDescription} onValueChange={setActionDescription} />
                 <AcutenessSelect defaultAcuteness="1" id="acuteness-action" />
                 <ItemSelect selectedItem="" id="itemId-action" />
               </ModalBody>
