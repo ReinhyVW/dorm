@@ -42,7 +42,7 @@ export default function MeetingTable({ columns, rows, id, }: { columns: any; row
         return <TableText title="Description" id={row.ItemId + "-description-action"} item={row.Item} />
 
       case "acuteness":
-        return <AcutenessSelect selectedAcuteness="" id={row.ItemId + "-acuteness-action"} />
+        return <AcutenessSelect defaultAcuteness="1" id={row.ItemId + "-acuteness-action"} />
 
       default:
         return <OptionCell id={`${columnKey.toString()}-${row.ItemId}-meetingData`} />;

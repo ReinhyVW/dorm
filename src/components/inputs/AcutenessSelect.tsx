@@ -6,11 +6,11 @@ import { Acuteness } from "@/types";
 import { getAcuteness } from "@/adapters/dataGetters/getAcuteness";
 
 interface CenterSelectProps {
-  defautlAcuteness: string;
+  defaultAcuteness: string;
   id: string;
 }
 
-const AcutenessSelect: React.FC<CenterSelectProps> = ({ defautlAcuteness: defautlAcuteness, id }) => {
+const AcutenessSelect: React.FC<CenterSelectProps> = ({ defaultAcuteness: defaultAcuteness, id }) => {
   const [selectedAcuteness, setSelectedAcuteness] = React.useState<Selection>(new Set([]));
   const [acuteness, setAcuteness] = React.useState<Acuteness[]>([])
 
@@ -38,7 +38,7 @@ const AcutenessSelect: React.FC<CenterSelectProps> = ({ defautlAcuteness: defaut
       selectedKeys={selectedAcuteness}
       onSelectionChange={setSelectedAcuteness}
     >
-      {(acuteness) => <SelectItem value={acuteness.AcutenessId} key={acuteness.AcutenessId}>{acuteness.Acuteness}</SelectItem>}
+      {(acuteness: any) => <SelectItem value={acuteness.AcutenessId} key={acuteness.AcutenessId}>{acuteness.Acuteness}</SelectItem>}
     </Select>
   )
 }
