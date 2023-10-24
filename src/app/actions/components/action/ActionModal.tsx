@@ -77,7 +77,7 @@ export default function ActionModal() {
                 <StatusSelect selectedStatus="1" id="statusId-action" showStatus={false} />
                 <CenterSelect selectedCenter="" id="centerId-action" />
                 <Textarea label="Action Description" id="actionDescription-action" value={actionDescription} onValueChange={setActionDescription} />
-                <AcutenessSelect defautlAcuteness="1" id="acuteness-action" />
+                <AcutenessSelect defaultAcuteness="1" id="acuteness-action" />
                 <ItemSelect selectedItem="" id="itemId-action" />
               </ModalBody>
               <ModalFooter>
