@@ -42,19 +42,21 @@ export interface Acuteness {
 export type Actions = {
   ActionId: number;
   AssignedOn: Date;
+  ReportedByUserId: number;
   ReportedBy: string;
-  ReportedByEmail: Email | null;
-  AssignedTo: AssignedTo;
-  AssignedToEmail: Email | null;
+  ReportedByEmail: string;
+  AssignedToUserId: number;
+  AssignedTo: string;
+  AssignedToEmail: string;
   Item: string;
   StatusId: number;
   Status: string;
   ActionDescription: string;
   Acuteness: string;
-  AcutenessName: string;
   Center: string;
-  Resolution: null | string;
+  Resolution: string;
 }
+
 
 export type Actions = Actions[]
 

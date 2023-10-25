@@ -26,7 +26,6 @@ import { columns } from "../../domain/columns"
 import Loading from "@/components/Loading";
 import ActionModal from "../action/ActionModal";
 import { useRouter } from "next/navigation";
-import submitEmail from "@/adapters/dataPosters/submitEmail";
 
 const acutenessColorMap: Record<string, ChipProps["color"]> = {
   1: "danger",
@@ -75,8 +74,6 @@ export default function ActionTable() {
     loadData()
   }, [])
 
-  type Action = typeof actions[0];
-
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
@@ -86,7 +83,7 @@ export default function ActionTable() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredActions: Action[] = [...actions];
+    let filteredActions: Actions[] = [...actions];
 
     if (hasSearchFilter) {
       const searchFilter = filterValue.toLowerCase();
@@ -122,9 +119,9 @@ export default function ActionTable() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Action, b: Action) => {
-      const first = a[sortDescriptor.column as keyof Action] as number;
-      const second = b[sortDescriptor.column as keyof Action] as number;
+    return [...items].sort((a: Actions, b: Actions) => {
+      const first = a[sortDescriptor.column as keyof Actions] as number;
+      const second = b[sortDescriptor.column as keyof Actions] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -143,14 +140,14 @@ export default function ActionTable() {
     alert("Soon to be implemented")
   }
 
-  const renderCell = React.useCallback((action: Action, columnKey: React.Key) => {
-    const cellValue = action[columnKey as keyof Action];
+  const renderCell = React.useCallback((action: Actions, columnKey: React.Key) => {
+    const cellValue = action[columnKey as keyof Actions];
 
     switch (columnKey) {
       case "ActionId":
-        return <>{action.ActionId}</>
+        return <>{String(action.ActionId)}</>
       case "AssignedOn":
-        return <>{action.AssignedOn}</>
+        return <>{String(action.AssignedOn)}</>
       case "ReportedBy":
         return (
           <User
@@ -158,10 +155,10 @@ export default function ActionTable() {
             classNames={{
               description: "text-default-500",
             }}
-            description={action.ReportedByEmail}
-            name={cellValue}
+            description={String(action.ReportedByEmail)}
+            name={String(action.ReportedBy)}
           >
-            {action.ReportedByEmail}
+            {String(action.ReportedByEmail)}
           </User>
         );
       case "AssignedTo":
@@ -171,22 +168,22 @@ export default function ActionTable() {
             classNames={{
               description: "text-default-500",
             }}
-            description={action.AssignedToEmail}
-            name={cellValue}
+            description={String(action.AssignedToEmail)}
+            name={String(action.AssignedTo)}
           >
-            {action.AssignedToEmail}
+            <>{String(action.AssignedToEmail)}</>
           </User>
         );
       case "Item":
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-medium capitalize">{cellValue}</p>
+            <p className="text-bold text-medium capitalize">{String(action.Item)}</p>
           </div>
         );
       case "Status":
-        return <p>{action.Status}</p>;
+        return <p>{String(action.Status)}</p>;
       case "Center":
-        return <p>{cellValue}</p>
+        return <p>{String(action.Center)}</p>
       case "Acuteness":
         return (
           <Chip
@@ -195,7 +192,7 @@ export default function ActionTable() {
             size="sm"
             variant="dot"
           >
-            {action.AcutenessName}
+            {String(action.Acuteness)}
           </Chip>
         );
       case "Actions":
@@ -216,7 +213,7 @@ export default function ActionTable() {
               </DropdownMenu>
             </Dropdown>
           </div>
-        );
+        )
       default:
         return cellValue;
     }

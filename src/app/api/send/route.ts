@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     ActionDescription,
     Acuteness,
     Center,
-  } = requestData; // Removed unnecessary 'await'
+  } = requestData;
 
   try {
     const data = await resend.emails.send({

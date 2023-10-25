@@ -11,38 +11,35 @@ export async function GET() {
   const result = await pool.request()
     .query(`
     SELECT
-      A.ActionId,
-      A.ReportedOn AS AssignedOn,
-      U1.Username AS ReportedBy,
-      U1.Email AS ReportedByEmail,
-      U2.Username AS AssignedTo,
-      U2.Email AS AssignedToEmail,
-      I.Item AS Item,
-      S.StatusId,
-      S.Status,
-      A.ActionDescription,
-      A.Acuteness,
-      AC.Acuteness AS AcutenessName,
-      C.Center,
-      A.Resolution
-    FROM
-      ACTIONS A
-    JOIN
-      USERS U1 ON A.ReportedBy = U1.UserId
-    JOIN
-      USERS U2 ON A.AssignedTo = U2.UserId
-    JOIN
-      ITEMS I ON A.ItemId = I.ItemId
-    JOIN
-      [STATUS] S ON A.StatusId = S.StatusId
-    JOIN
-      CENTERS C ON A.CenterId = C.CenterId
-    JOIN
-      ACUTENESS AC ON A.Acuteness = AC.AcutenessId
+    A.ActionId,
+    A.ReportedOn AS AssignedOn,
+    U1.UserId AS ReportedByUserId,
+    U1.Username AS ReportedBy,
+    U1.Email AS ReportedByEmail,
+    U2.UserId AS AssignedToUserId,
+    U2.Username AS AssignedTo,
+    U2.Email AS AssignedToEmail,
+    I.Item AS Item,
+    S.Status,
+    A.ActionDescription,
+    AC.Acuteness AS Acuteness,
+    C.Center,
+    A.Resolution
+  FROM
+    ACTIONS A
+  JOIN
+    USERS U1 ON A.ReportedBy = U1.UserId
+  JOIN
+    USERS U2 ON A.AssignedTo = U2.UserId
+  JOIN
+    ITEMS I ON A.ItemId = I.ItemId
+  JOIN
+    [STATUS] S ON A.StatusId = S.StatusId
+  JOIN
+    CENTERS C ON A.CenterId = C.CenterId
+  JOIN
+    ACUTENESS AC ON A.Acuteness = AC.AcutenessId
     `);
-
-
-
 
   const actions = result.recordset;
 
@@ -75,35 +72,36 @@ export async function POST(request: any) {
     const actionData = await pool.request()
       .input('ActionId', sql.Int, actionId)
       .query(`
-          SELECT
-            A.ActionId,
-            A.ReportedOn AS AssignedOn,
-            U1.UserId AS ReportedByUserId,
-            U1.Username AS ReportedBy,
-            U1.Email AS ReportedByEmail,
-            U2.UserId AS AssignedToUserId,
-            U2.Username AS AssignedTo,
-            U2.Email AS AssignedToEmail,
-            I.Item AS Item,
-            S.Status,
-            A.ActionDescription,
-            AC.Acuteness AS Acuteness,
-            C.Center,
-            A.Resolution
-          FROM
-            ACTIONS A
-          JOIN
-            USERS U1 ON A.ReportedBy = U1.UserId
-          JOIN
-            USERS U2 ON A.AssignedTo = U2.UserId
-          JOIN
-            ITEMS I ON A.ItemId = I.ItemId
-          JOIN
-            [STATUS] S ON A.StatusId = S.StatusId
-          JOIN
-            CENTERS C ON A.CenterId = C.CenterId
-          JOIN
-            ACUTENESS AC ON A.Acuteness = AC.AcutenessId
+      SELECT
+      A.ActionId,
+      A.ReportedOn AS AssignedOn,
+      U1.UserId AS ReportedByUserId,
+      U1.Username AS ReportedBy,
+      U1.Email AS ReportedByEmail,
+      U2.UserId AS AssignedToUserId,
+      U2.Username AS AssignedTo,
+      U2.Email AS AssignedToEmail,
+      I.Item AS Item,
+      S.StatusId,
+      S.Status,
+      A.ActionDescription,
+      AC.Acuteness AS Acuteness,
+      C.Center,
+      A.Resolution
+    FROM
+      ACTIONS A
+    JOIN
+      USERS U1 ON A.ReportedBy = U1.UserId
+    JOIN
+      USERS U2 ON A.AssignedTo = U2.UserId
+    JOIN
+      ITEMS I ON A.ItemId = I.ItemId
+    JOIN
+      [STATUS] S ON A.StatusId = S.StatusId
+    JOIN
+      CENTERS C ON A.CenterId = C.CenterId
+    JOIN
+      ACUTENESS AC ON A.Acuteness = AC.AcutenessId
           WHERE ActionId = @ActionId
       `);
 
